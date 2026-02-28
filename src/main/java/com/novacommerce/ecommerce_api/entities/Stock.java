@@ -1,5 +1,6 @@
 package com.novacommerce.ecommerce_api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ public class Stock {
     @OneToOne
     @MapsId
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private Product product;
 
     @Min(0)
