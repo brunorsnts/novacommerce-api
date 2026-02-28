@@ -36,4 +36,7 @@ public class Client {
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
+
+    @OneToOne(mappedBy = "client")
+    private Cart cart;
 }
