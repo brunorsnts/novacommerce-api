@@ -1,5 +1,6 @@
 package com.novacommerce.ecommerce_api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -26,5 +27,6 @@ public class Category {
 
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 }
