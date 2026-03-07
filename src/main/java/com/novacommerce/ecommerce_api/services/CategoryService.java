@@ -1,5 +1,6 @@
 package com.novacommerce.ecommerce_api.services;
 
+import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import com.novacommerce.ecommerce_api.entities.Category;
 import com.novacommerce.ecommerce_api.repositories.CategoryRepository;
 import org.slf4j.Logger;
@@ -18,15 +19,15 @@ public class CategoryService {
         this.repository = repository;
     }
 
-    public Page<Category> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<CategoryDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(CategoryDTO::new);
     }
 
-    public Category findById(Long id) {
+    public CategoryDTO findById(Long id) {
         Category category = repository.findById(id).orElseThrow(() -> {
             logger.warn("Tentativa de busca falhou. Categoria não encontrada para o id: {}", id);
             return new RuntimeException("Categoria não encontrada");
         });
-        return category;
+        return new CategoryDTO(category);
     }
 }
