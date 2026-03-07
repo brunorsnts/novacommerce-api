@@ -1,6 +1,7 @@
 package com.novacommerce.ecommerce_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -29,4 +30,8 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private Set<Product> products = new HashSet<>();
+
+    public Category(CategoryDTO dto) {
+        this.name = dto.name();
+    }
 }

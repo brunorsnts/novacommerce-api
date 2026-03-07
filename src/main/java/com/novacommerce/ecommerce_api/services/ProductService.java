@@ -1,6 +1,8 @@
 package com.novacommerce.ecommerce_api.services;
 
+import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import com.novacommerce.ecommerce_api.dtos.ProductDTO;
+import com.novacommerce.ecommerce_api.entities.Category;
 import com.novacommerce.ecommerce_api.entities.Product;
 import com.novacommerce.ecommerce_api.repositories.ProductRepository;
 import org.slf4j.Logger;
