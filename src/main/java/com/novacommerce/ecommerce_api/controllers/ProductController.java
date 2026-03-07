@@ -1,6 +1,5 @@
 package com.novacommerce.ecommerce_api.controllers;
 
-import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import com.novacommerce.ecommerce_api.dtos.ProductDTO;
 import com.novacommerce.ecommerce_api.services.ProductService;
 import org.springframework.data.domain.Page;
@@ -9,7 +8,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -22,6 +20,15 @@ public class ProductController {
 
     public ProductController(ProductService service) {
         this.service = service;
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO productDTO, UriComponentsBuilder uriBuilder) {
+        ProductDTO dto = service.insert(productDTO);
+        URI uri = uriBuilder.path("/products/{id}")
+                .buildAndExpand(dto.id())
+                .toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @GetMapping

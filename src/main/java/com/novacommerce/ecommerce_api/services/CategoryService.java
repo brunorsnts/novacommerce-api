@@ -19,6 +19,11 @@ public class CategoryService {
         this.repository = repository;
     }
 
+    public CategoryDTO insert(CategoryDTO categoryDTO) {
+        Category category = new Category(categoryDTO);
+        return new CategoryDTO(repository.save(category));
+    }
+
     public Page<CategoryDTO> findAll(Pageable pageable) {
         return repository.findAll(pageable).map(CategoryDTO::new);
     }
@@ -29,10 +34,5 @@ public class CategoryService {
             return new RuntimeException("Categoria não encontrada");
         });
         return new CategoryDTO(category);
-    }
-
-    public CategoryDTO insert(CategoryDTO categoryDTO) {
-        Category category = new Category(categoryDTO);
-        return new CategoryDTO(repository.save(category));
     }
 }

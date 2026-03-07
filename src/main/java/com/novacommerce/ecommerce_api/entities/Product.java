@@ -1,6 +1,8 @@
 package com.novacommerce.ecommerce_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
+import com.novacommerce.ecommerce_api.dtos.ProductDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -40,4 +42,11 @@ public class Product {
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private Stock stock;
+
+    public Product(ProductDTO productDTO, Category category) {
+        this.name = productDTO.name();
+        this.description = productDTO.description();
+        this.price = productDTO.price();
+        this.category = category;
+    }
 }
