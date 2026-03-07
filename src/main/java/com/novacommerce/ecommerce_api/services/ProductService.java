@@ -1,5 +1,6 @@
 package com.novacommerce.ecommerce_api.services;
 
+import com.novacommerce.ecommerce_api.dtos.ProductDTO;
 import com.novacommerce.ecommerce_api.entities.Product;
 import com.novacommerce.ecommerce_api.repositories.ProductRepository;
 import org.slf4j.Logger;
@@ -18,15 +19,15 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Page<Product> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<ProductDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(ProductDTO::new);
     }
 
-    public Product findById(Long id) {
+    public ProductDTO findById(Long id) {
         Product product = repository.findById(id).orElseThrow(() -> {
             logger.warn("Tentativa de busca falhou. Produto não encontrado para o id: {}", id);
             return new RuntimeException("Produto não encontrado");
         });
-        return product;
+        return new ProductDTO(product);
     }
 }

@@ -1,6 +1,6 @@
 package com.novacommerce.ecommerce_api.controllers;
 
-import com.novacommerce.ecommerce_api.entities.Product;
+import com.novacommerce.ecommerce_api.dtos.ProductDTO;
 import com.novacommerce.ecommerce_api.services.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,17 +23,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<PagedModel<Product>> findAll(
+    public ResponseEntity<PagedModel<ProductDTO>> findAll(
             @PageableDefault(size = 10, sort = "name")
             Pageable pageable) {
-        Page<Product> products = service.findAll(pageable);
-        PagedModel<Product> page = new PagedModel<>(products);
+        Page<ProductDTO> products = service.findAll(pageable);
+        PagedModel<ProductDTO> page = new PagedModel<>(products);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id) {
-        Product product = service.findById(id);
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+        ProductDTO product = service.findById(id);
         return ResponseEntity.ok(product);
     }
 }
