@@ -1,5 +1,6 @@
 package com.novacommerce.ecommerce_api.controllers.handlers;
 
+import com.novacommerce.ecommerce_api.exceptions.DatabaseException;
 import com.novacommerce.ecommerce_api.exceptions.ResourceNotFoundException;
 import com.novacommerce.ecommerce_api.exceptions.StandardError;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +22,19 @@ public class ResourceExceptionHandler {
         error.setTimeStamp(Instant.now());
         error.setStatus(status.value());
         error.setError("Resource not found");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> databaseError(DatabaseException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StandardError error = new StandardError();
+        error.setTimeStamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("Database exception");
         error.setMessage(e.getMessage());
         error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);

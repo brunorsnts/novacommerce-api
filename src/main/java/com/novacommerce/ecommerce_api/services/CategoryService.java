@@ -2,11 +2,13 @@ package com.novacommerce.ecommerce_api.services;
 
 import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import com.novacommerce.ecommerce_api.entities.Category;
+import com.novacommerce.ecommerce_api.exceptions.DatabaseException;
 import com.novacommerce.ecommerce_api.exceptions.ResourceNotFoundException;
 import com.novacommerce.ecommerce_api.repositories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,10 @@ public class CategoryService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 }
