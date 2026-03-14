@@ -3,6 +3,7 @@ package com.novacommerce.ecommerce_api.services;
 import com.novacommerce.ecommerce_api.dtos.ProductDTO;
 import com.novacommerce.ecommerce_api.entities.Category;
 import com.novacommerce.ecommerce_api.entities.Product;
+import com.novacommerce.ecommerce_api.exceptions.ResourceNotFoundException;
 import com.novacommerce.ecommerce_api.repositories.CategoryRepository;
 import com.novacommerce.ecommerce_api.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,7 +29,7 @@ public class ProductService {
     public ProductDTO insert(ProductDTO productDTO) {
         Category category = categoryRepository.findById(productDTO.category().id()).orElseThrow(() -> {
             logger.warn("Não existe nenhuma categoria vinculada ao id: {}", productDTO.category().id());
-            return new RuntimeException("Categoria de id " + productDTO.category().id() + " inexistente");
+            return new ResourceNotFoundException("Categoria de id " + productDTO.category().id() + " inexistente");
         });
 
         Product product = new Product(productDTO, category);
@@ -43,7 +44,7 @@ public class ProductService {
     public ProductDTO findById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> {
             logger.warn("Tentativa de busca falhou. Produto não encontrado para o id: {}", id);
-            return new RuntimeException("Produto não encontrado");
+            return new ResourceNotFoundException("Produto não encontrado");
         });
         return new ProductDTO(product);
     }
@@ -62,7 +63,7 @@ public class ProductService {
 
         } catch (EntityNotFoundException  e) {
             logger.warn("Produto ou Categoria informados não existem.");
-            throw new RuntimeException("Por favor verifique o id do produto ou categoria informado e tente novamente!");
+            throw new ResourceNotFoundException("Por favor verifique o id do produto ou categoria informado e tente novamente!");
         }
     }
 

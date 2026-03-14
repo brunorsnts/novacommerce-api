@@ -2,6 +2,7 @@ package com.novacommerce.ecommerce_api.services;
 
 import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import com.novacommerce.ecommerce_api.entities.Category;
+import com.novacommerce.ecommerce_api.exceptions.ResourceNotFoundException;
 import com.novacommerce.ecommerce_api.repositories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class CategoryService {
     public CategoryDTO findById(Long id) {
         Category category = repository.findById(id).orElseThrow(() -> {
             logger.warn("Tentativa de busca falhou. Categoria não encontrada para o id: {}", id);
-            return new RuntimeException("Categoria não encontrada");
+            return new ResourceNotFoundException("Categoria não encontrada");
         });
         return new CategoryDTO(category);
     }
@@ -45,7 +46,7 @@ public class CategoryService {
 
         }catch (EntityNotFoundException e) {
             logger.warn("Falha na tentativa de atualização! Categoria não existe.");
-            throw new RuntimeException("Categoria de id " + id + " não encontrada.");
+            throw new ResourceNotFoundException("Categoria de id " + id + " não encontrada.");
         }
     }
 
