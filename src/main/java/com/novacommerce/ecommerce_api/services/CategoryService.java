@@ -41,12 +41,15 @@ public class CategoryService {
         try {
             Category entity = repository.getReferenceById(id);
             entity.setName(dto.name());
-            entity = repository.save(entity);
             return new CategoryDTO(repository.save(entity));
 
         }catch (EntityNotFoundException e) {
             logger.warn("Falha na tentativa de atualização! Categoria não existe.");
             throw new RuntimeException("Categoria de id " + id + " não encontrada.");
         }
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }
