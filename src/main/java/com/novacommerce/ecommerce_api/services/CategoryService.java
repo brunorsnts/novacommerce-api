@@ -3,6 +3,7 @@ package com.novacommerce.ecommerce_api.services;
 import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import com.novacommerce.ecommerce_api.entities.Category;
 import com.novacommerce.ecommerce_api.repositories.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -34,5 +35,18 @@ public class CategoryService {
             return new RuntimeException("Categoria não encontrada");
         });
         return new CategoryDTO(category);
+    }
+
+    public CategoryDTO update(Long id, CategoryDTO dto) {
+        try {
+            Category entity = repository.getReferenceById(id);
+            entity.setName(dto.name());
+            entity = repository.save(entity);
+            return new CategoryDTO(repository.save(entity));
+
+        }catch (EntityNotFoundException e) {
+            logger.warn("Falha na tentativa de atualização! Categoria não existe.");
+            throw new RuntimeException("Categoria de id " + id + " não encontrada.");
+        }
     }
 }
