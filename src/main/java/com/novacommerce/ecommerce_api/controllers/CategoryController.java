@@ -2,6 +2,7 @@ package com.novacommerce.ecommerce_api.controllers;
 
 import com.novacommerce.ecommerce_api.dtos.CategoryDTO;
 import com.novacommerce.ecommerce_api.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,7 +25,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO categoryDTO, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<CategoryDTO> insert(@Valid @RequestBody CategoryDTO categoryDTO, UriComponentsBuilder uriBuilder) {
         CategoryDTO dto = service.insert(categoryDTO);
         URI uri = uriBuilder.path("/categories/{id}")
                 .buildAndExpand(dto.id())
@@ -47,7 +48,7 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto) {
         CategoryDTO updatedDto = service.update(id, dto);
         return ResponseEntity.ok(updatedDto);
     }

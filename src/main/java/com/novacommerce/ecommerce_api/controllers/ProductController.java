@@ -2,6 +2,7 @@ package com.novacommerce.ecommerce_api.controllers;
 
 import com.novacommerce.ecommerce_api.dtos.ProductDTO;
 import com.novacommerce.ecommerce_api.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,7 +24,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO productDTO, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO, UriComponentsBuilder uriBuilder) {
         ProductDTO dto = service.insert(productDTO);
         URI uri = uriBuilder.path("/products/{id}")
                 .buildAndExpand(dto.id())
@@ -47,7 +48,7 @@ public class ProductController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
         ProductDTO productDTO = service.update(id, dto);
         return ResponseEntity.ok(productDTO);
     }
