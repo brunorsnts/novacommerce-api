@@ -5,6 +5,7 @@ import com.novacommerce.ecommerce_api.entities.Category;
 import com.novacommerce.ecommerce_api.entities.Product;
 import com.novacommerce.ecommerce_api.repositories.CategoryRepository;
 import com.novacommerce.ecommerce_api.repositories.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,24 @@ public class ProductService {
             return new RuntimeException("Produto não encontrado");
         });
         return new ProductDTO(product);
+    }
+
+    public ProductDTO update(Long id, ProductDTO dto) {
+        try {
+            Product entity = productRepository.getReferenceById(id);
+            entity.setName(dto.name());
+            entity.setDescription(dto.description());
+            entity.setPrice(dto.price());
+
+            Category category = categoryRepository.getReferenceById(dto.category().id());
+            entity.setCategory(category);
+            entity = productRepository.save(entity);
+            return new ProductDTO(entity);
+
+        } catch (EntityNotFoundException  e) {
+            logger.warn("Produto ou Categoria informados não existem.");
+            throw new RuntimeException("Por favor verifique o id do produto ou categoria informado e tente novamente!");
+        }
     }
 
     private boolean existsId(Long id) {
