@@ -1,5 +1,6 @@
 package com.novacommerce.ecommerce_api.entities;
 
+import com.novacommerce.ecommerce_api.dtos.UserInsertDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,4 +28,12 @@ public class User {
     private LocalDate birthDate;
 
     private String password;
+
+    public User(UserInsertDTO userInsertDTO) {
+        this.name = userInsertDTO.name();
+        this.email = userInsertDTO.email();
+        this.phone = userInsertDTO.phone();
+        this.birthDate = userInsertDTO.birthDate();
+        this.password = userInsertDTO.password();
+    }
 }
