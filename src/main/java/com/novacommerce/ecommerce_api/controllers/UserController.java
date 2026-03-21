@@ -2,6 +2,7 @@ package com.novacommerce.ecommerce_api.controllers;
 
 import com.novacommerce.ecommerce_api.dtos.UserDTO;
 import com.novacommerce.ecommerce_api.dtos.UserInsertDTO;
+import com.novacommerce.ecommerce_api.dtos.UserUpdateDTO;
 import com.novacommerce.ecommerce_api.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,12 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO>  findById(@PathVariable Long id) {
         UserDTO userDTO = service.findById(id);
+        return ResponseEntity.ok(userDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        UserDTO userDTO = service.update(id, userUpdateDTO);
         return ResponseEntity.ok(userDTO);
     }
 }
