@@ -11,8 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "tb_clients")
@@ -39,4 +37,14 @@ public class Client {
 
     @OneToOne(mappedBy = "client")
     private Cart cart;
+
+    public Client() {}
+
+    public Client(Long id, String name, String email, String cpf, Cart cart) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+        this.cart = cart;
+    }
 }

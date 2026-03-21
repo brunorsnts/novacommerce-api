@@ -11,8 +11,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "tb_orders")
@@ -37,4 +35,13 @@ public class Order {
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    public Order() {}
+
+    public Order(Long id, Instant moment, OrderStatus status, Client client) {
+        this.id = id;
+        this.moment = moment;
+        this.status = status;
+        this.client = client;
+    }
 }
