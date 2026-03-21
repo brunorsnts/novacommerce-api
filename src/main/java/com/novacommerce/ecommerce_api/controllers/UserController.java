@@ -5,10 +5,7 @@ import com.novacommerce.ecommerce_api.dtos.UserInsertDTO;
 import com.novacommerce.ecommerce_api.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -28,5 +25,11 @@ public class UserController {
         UserDTO userDTO = service.insert(userInsertDTO);
         URI uri = uriBuilder.path("/users/{id}").buildAndExpand(userDTO.id()).toUri();
         return ResponseEntity.created(uri).body(userDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO>  findById(@PathVariable Long id) {
+        UserDTO userDTO = service.findById(id);
+        return ResponseEntity.ok(userDTO);
     }
 }
