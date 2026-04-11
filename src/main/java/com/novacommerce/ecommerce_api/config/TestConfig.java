@@ -62,7 +62,7 @@ public class TestConfig implements CommandLineRunner {
         clientRepository.save(client1);
 
         // Criando um Pedido para a Maria
-        Order order1 = new Order(null, Instant.now(), OrderStatus.PAID, client1);
+        Order order1 = new Order(Instant.now(), OrderStatus.PAID, client1);
         orderRepository.save(order1);
 
         // Adicionando 2 iPhones no Pedido da Maria

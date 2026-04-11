@@ -38,8 +38,7 @@ public class Order {
 
     public Order() {}
 
-    public Order(Long id, Instant moment, OrderStatus status, Client client) {
-        this.id = id;
+    public Order(Instant moment, OrderStatus status, Client client) {
         this.moment = moment;
         this.status = status;
         this.client = client;
