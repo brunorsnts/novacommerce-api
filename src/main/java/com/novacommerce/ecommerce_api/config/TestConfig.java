@@ -5,6 +5,7 @@ import com.novacommerce.ecommerce_api.entities.enums.OrderStatus;
 import com.novacommerce.ecommerce_api.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -22,27 +23,42 @@ public class TestConfig implements CommandLineRunner {
     private final ClientRepository clientRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public TestConfig(CategoryRepository categoryRepository,
                       ProductRepository productRepository,
                       UserRepository userRepository,
                       ClientRepository clientRepository,
                       OrderRepository orderRepository,
-                      OrderItemRepository orderItemRepository) {
+                      OrderItemRepository orderItemRepository,
+                      RoleRepository roleRepository,
+                      PasswordEncoder passwordEncoder) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-        User bruno = new User("Bruno Santos", "bruno@gmail.com", "21999999999", LocalDate.parse("2002-05-08"), "bruno123");
-        User alex = new User("Alex Rodrigues", "alex@gmail.com", "21999999999", LocalDate.parse("2000-08-27"), "alex123");
-        userRepository.saveAll(List.of(bruno, alex));
+        // 1. Criando os perfis (Roles)
+        Role roleClient = new Role("ROLE_CLIENT");
+        Role roleAdmin = new Role("ROLE_ADMIN");
+        roleRepository.saveAll(Arrays.asList(roleClient, roleAdmin));
+
+        User bruno = new User("Bruno Santos", "bruno@gmail.com", "21999999999", LocalDate.parse("2002-05-08"), passwordEncoder.encode("bruno123"));
+        User alex = new User("Alex Rodrigues", "alex@gmail.com", "21999999999", LocalDate.parse("2000-08-27"), passwordEncoder.encode("alex123"));
+        User maria = new User("Maria Silva", "maria@gmail.com", "999999999", LocalDate.parse("2002-05-08"),  passwordEncoder.encode("123456"));
+        maria.getRoles().add(roleClient);
+        bruno.getRoles().add(roleAdmin);
+        alex.getRoles().add(roleClient);
+        userRepository.saveAll(List.of(bruno, alex, maria));
 
         Category category1 = new Category(null, "Eletrônicos", new HashSet<>());
         Stock stock1 = new Stock(null,null , 10);
