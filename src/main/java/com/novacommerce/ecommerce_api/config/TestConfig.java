@@ -40,8 +40,8 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User bruno = new User(null, "Bruno Santos", "bruno@gmail.com", "21999999999", LocalDate.parse("2002-05-08"), "bruno123");
-        User alex = new User(null, "Alex Rodrigues", "alex@gmail.com", "21999999999", LocalDate.parse("2000-08-27"), "alex123");
+        User bruno = new User("Bruno Santos", "bruno@gmail.com", "21999999999", LocalDate.parse("2002-05-08"), "bruno123");
+        User alex = new User("Alex Rodrigues", "alex@gmail.com", "21999999999", LocalDate.parse("2000-08-27"), "alex123");
         userRepository.saveAll(List.of(bruno, alex));
 
         Category category1 = new Category(null, "Eletrônicos", new HashSet<>());
